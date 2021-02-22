@@ -1,0 +1,77 @@
+{% extends 'master.html'%} {% load bootstrap4 %} {% load static %} {% block titulo %}Listar productos{% endblock %} {% block cuerpo %}
+<h1>
+    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-shop" viewBox="0 0 16 16">
+        <path d="M2.97 1.35A1 1 0 0 1 3.73 1h8.54a1 1 0 0 1 .76.35l2.609 3.044A1.5 1.5 0 0 1 16 5.37v.255a2.375 2.375 0 0 1-4.25 1.458A2.371 2.371 0 0 1 9.875 8 2.37 2.37 0 0 1 8 7.083 2.37 2.37 0 0 1 6.125 8a2.37 2.37 0 0 1-1.875-.917A2.375 2.375 0 0 1 0 5.625V5.37a1.5 1.5 0 0 1 .361-.976l2.61-3.045zm1.78 4.275a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 1 0 2.75 0V5.37a.5.5 0 0 0-.12-.325L12.27 2H3.73L1.12 5.045A.5.5 0 0 0 1 5.37v.255a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0zM1.5 8.5A.5.5 0 0 1 2 9v6h1v-5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v5h6V9a.5.5 0 0 1 1 0v6h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1V9a.5.5 0 0 1 .5-.5zM4 15h3v-5H4v5zm5-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-3zm3 0h-2v3h2v-3z"/>
+      </svg> Productos
+</h1>
+<input class="form-control" id="Filtro" type="text" placeholder="Buscar..">
+<br>
+<table class="table">
+    <thead class="thead-light">
+        <tr>
+            <th>NOMBRE</th>
+            <th>PRECIO</th>
+            <th>STOCK</th>
+            <th>OPCIONES</th>
+        </tr>
+    </thead>
+    <tbody id="TablaBusqueda">
+        {% for producto in productos%}
+        <tr>
+            <td style="text-align: center;">
+                <h6>{{producto.pro_nombre.upper}}</h6>
+                <img style="width: 128px;height:auto;" src='{{MEDIA_URL}}{{producto.pro_imagen}}'>
+            </td>
+            <td>{{producto.pro_precio}}</td>
+            <td>{{producto.pro_stock}}</td>
+            <td>
+
+                <a href="{% url 'editarProducto' producto.pro_id %}" class="btn btn-outline-warning">
+                    <svg class="bi" width="18" height="18" fill="currentColor">
+                        <use xlink:href="{% static 'iconos/bootstrap-icons.svg' %}#pencil-fill"/>
+                    </svg>
+                </a>
+
+                <button class="btn btn-outline-danger" data-href="{% url 'eliminarProducto' producto.pro_id %}" data-toggle="modal" data-target="#confirm-delete">
+                    <svg class="bi" width="18" height="18" fill="currentColor">
+                        <use xlink:href="{% static 'iconos/bootstrap-icons.svg' %}#eraser-fill"/>
+                    </svg>
+                </button>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>Quieres eliminar este registro?</h4>
+            </div>
+            <div class="modal-body">
+                <p>Despues de eliminar este registro no puedes recuperar</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger btn-ok">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} {% block masJS %}
+<script>
+    $(document).ready(function() {
+        $("#Filtro").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#TablaBusqueda tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
+<script>
+    $('#confirm-delete').on('show.bs.modal', function(e) {
+        $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+    });
+</script>
+{%endblock%}

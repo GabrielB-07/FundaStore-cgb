@@ -1,0 +1,7 @@
+{% extends 'inicio.html' %} {% load bootstrap4 %} {%block titulo%}Agregar productos{%endblock%} {%block cuerpo%}
+<h1>Crear producto</h1>
+<br>
+<form method="POST" enctype='multipart/form-data'>
+    {%csrf_token%} {% bootstrap_form formulario %} {% buttons %} {% if request.accion != 'R' %}
+    <input class="btn btn-primary" type="submit" value="Guardar">
+    <input class="btn btn-primary" type="reset" value="Limpiar"> {%endif%} {% endbuttons %} </form> {%endblock%}

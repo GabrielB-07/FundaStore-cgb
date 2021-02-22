@@ -1,0 +1,8 @@
+{% extends 'master.html'%} {% load bootstrap4 %} {% load static %} {% block titulo %}Listar productos{% endblock %} {% block cuerpo %}
+<form method='POST'>
+    {%csrf_token%} {% for campo in formulario%} {% bootstrap_field campo%} {% endfor %} {% buttons %}
+    <input class="btn btn-primary" type="submit" value="Guardar">
+    <input class="btn btn-primary" type="reset" value="Limpiar">
+    <a href="{% url 'inicio' %}" class="btn btn-primary">Regresar</a> {%endbuttons%}
+</form>
+{% endblock %}
