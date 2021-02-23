@@ -61,7 +61,7 @@ ROOT_URLCONF = 'FUNDASTORE.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['FUNDASTORE/TEMPLATES'],
+        'DIRS': [os.path.join(BASE_DIR, 'FUNDASTORE/TEMPLATES')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
