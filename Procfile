@@ -1,0 +1,1 @@
+web: gunicorn FUNDASTORE.wsgi --log-file -
